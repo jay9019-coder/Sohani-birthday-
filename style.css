@@ -41,20 +41,65 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
 
 /* Backgrounds */
 .bg-dark{ background: radial-gradient(ellipse at 50% 30%, #3a2308 0%, #1a0f04 60%, #0e0702 100%); }
-.bg-garden{ background: linear-gradient(180deg,#ffdca0 0%, #ffb35c 35%, #ff8b4d 65%, #7a3b1a 100%); }
+.bg-garden{
+  background: linear-gradient(120deg,#ffdca0, #ffb35c, #ff8b4d, #ffc073, #ffdca0);
+  background-size: 300% 300%; animation: bgDrift 18s ease-in-out infinite;
+}
 .bg-game{ background: linear-gradient(180deg,#ffe6b3 0%, #ffc073 50%, #ff9a5a 100%); }
 .bg-joke{ background: radial-gradient(circle at 50% 20%, #4a2a10 0%, #1c0f04 70%); }
-.bg-favs{ background: linear-gradient(160deg,#2a160a 0%, #472107 55%, #24120a 100%); }
-.bg-letter{ background: linear-gradient(180deg,#ffb673 0%, #ff7a4d 45%, #6e2d16 100%); }
-.bg-final{ background: linear-gradient(180deg,#ffd27a 0%, #ff8a4c 30%, #e2542f 65%, #3c1408 100%); }
+.bg-favs{
+  background: linear-gradient(150deg,#2a160a, #472107, #24120a, #3a1c0c, #2a160a);
+  background-size: 300% 300%; animation: bgDrift 22s ease-in-out infinite;
+}
+.bg-special{
+  background: linear-gradient(150deg,#2a1408, #5c2a12, #7a3418, #4a2010, #2a1408);
+  background-size: 300% 300%; animation: bgDrift 20s ease-in-out infinite;
+}
+.bg-cake{
+  background: linear-gradient(150deg,#ffdca0, #ffb35c, #ff8b4d, #ffcf8f, #ffdca0);
+  background-size: 300% 300%; animation: bgDrift 16s ease-in-out infinite;
+}
+.bg-letter{
+  background: linear-gradient(160deg,#ffb673, #ff7a4d, #6e2d16, #ff9560, #ffb673);
+  background-size: 300% 300%; animation: bgDrift 20s ease-in-out infinite;
+}
+.bg-final{
+  background: linear-gradient(170deg,#ffd27a, #ff8a4c, #e2542f, #ffb15c, #3c1408);
+  background-size: 300% 300%; animation: bgDrift 14s ease-in-out infinite;
+}
+@keyframes bgDrift{
+  0%,100%{ background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+}
+
+.glow-behind{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width: 70vmax; height:70vmax; pointer-events:none; z-index:0;
+  background: radial-gradient(circle, rgba(244,200,105,0.28) 0%, rgba(244,200,105,0) 65%);
+  animation: glowPulse 5s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{ opacity:0.7; transform:translate(-50%,-50%) scale(1); }
+  50%{ opacity:1; transform:translate(-50%,-50%) scale(1.12); }
+}
+.scene > *{ position:relative; z-index:1; }
+
+/* Keep headline readable (dark) on bright backgrounds */
+.bg-game .headline, .bg-cake .headline{
+  -webkit-text-fill-color: #3a1c05; color:#3a1c05;
+  background:none; filter:none;
+}
 
 /* Typography */
 .headline{
   font-family:'Playfair Display', serif;
   font-weight:700;
   letter-spacing: 0.02em;
-  color: var(--cream);
-  text-shadow: 0 4px 30px rgba(0,0,0,0.35);
+  background: linear-gradient(135deg, #fff6e0 0%, var(--gold) 45%, #ffcf85 65%, var(--gold-deep) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 20px rgba(217,155,63,0.35));
+  position: relative;
 }
 .script{
   font-family:'Dancing Script', cursive;
@@ -92,13 +137,27 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   -webkit-user-select:none; user-select:none;
   min-height: 48px;
+  overflow: hidden;
 }
+.btn::before{
+  content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,0.65), transparent);
+  transform: skewX(-20deg);
+  animation: shimmerSweep 3.2s ease-in-out infinite;
+}
+@keyframes shimmerSweep{
+  0%{ left:-60%; }
+  35%{ left:130%; }
+  100%{ left:130%; }
+}
+.btn:hover{ box-shadow: 0 10px 36px rgba(217,155,63,0.6), inset 0 1px 0 rgba(255,255,255,0.7); }
 .btn:active{ transform: scale(0.96); }
 .btn.ghost{
   background: transparent; color: var(--cream);
   border: 1px solid rgba(255,246,224,0.5);
   box-shadow:none;
 }
+.btn.ghost::before{ display:none; }
 
 /* Music toggle */
 #musicToggle{
@@ -143,7 +202,6 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
 .joke-line{ font-size: clamp(1.2rem, 4vw, 2rem); margin: 0.5em 0; opacity:0; }
 
 /* Why She's Special scene */
-.bg-special{ background: linear-gradient(160deg,#2a1408 0%, #5c2a12 45%, #7a3418 75%, #2a1408 100%); }
 .special-line{
   font-family:'Cormorant Garamond', serif; font-style:italic;
   font-size: clamp(1.15rem, 3.6vw, 1.7rem); margin: 0.55em 0; opacity:0;
@@ -294,10 +352,21 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
   border: 1px solid rgba(255,246,224,0.25);
   box-shadow: 0 20px 45px rgba(0,0,0,0.35);
   opacity:0; transform: translateY(40px) rotateX(10deg);
-  transition: transform .4s ease;
+  transition: transform .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
-.fav-card:hover{ transform: translateY(-8px) scale(1.03); }
-.fav-icon{ font-size:2.6rem; filter: drop-shadow(0 0 18px rgba(244,200,105,0.7)); }
+.fav-card:hover{
+  transform: translateY(-8px) scale(1.03);
+  border-color: rgba(244,200,105,0.6);
+  box-shadow: 0 26px 55px rgba(0,0,0,0.4), 0 0 40px rgba(244,200,105,0.25);
+}
+.fav-icon{
+  font-size:2.6rem; filter: drop-shadow(0 0 18px rgba(244,200,105,0.7));
+  display:inline-block; animation: iconPulse 2.6s ease-in-out infinite;
+}
+@keyframes iconPulse{
+  0%,100%{ filter: drop-shadow(0 0 12px rgba(244,200,105,0.55)); transform: scale(1); }
+  50%{ filter: drop-shadow(0 0 26px rgba(244,200,105,0.9)); transform: scale(1.08); }
+}
 .fav-title{ font-family:'Playfair Display'; font-size:1.3rem; margin: 0.6rem 0; color: var(--gold); }
 .fav-text{ font-family:'Cormorant Garamond'; font-style:italic; font-size:1.05rem; color: rgba(255,246,224,0.85); }
 
@@ -305,8 +374,15 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
 .letter-card{
   max-width: 620px; width:100%; background: rgba(255,246,224,0.08); backdrop-filter: blur(16px);
   border:1px solid rgba(255,246,224,0.25); border-radius: 24px; padding: 2.6rem 2rem;
-  box-shadow: 0 30px 70px rgba(0,0,0,0.4); text-align:left;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.4), 0 0 60px rgba(255,180,120,0.12); text-align:left;
+  position:relative;
 }
+.letter-card::before, .letter-card::after{
+  content:'🌹'; position:absolute; font-size:1.6rem; opacity:0.7;
+  filter: drop-shadow(0 0 10px rgba(232,87,122,0.5));
+}
+.letter-card::before{ top:-14px; left:-10px; transform: rotate(-15deg); }
+.letter-card::after{ bottom:-14px; right:-10px; transform: rotate(165deg); }
 .letter-text{ font-family:'Cormorant Garamond'; font-size: clamp(1.05rem, 2.6vw, 1.3rem); line-height:1.85; white-space: pre-wrap; }
 .letter-text .word{ opacity:0; display:inline-block; }
 .signature{ font-family:'Dancing Script'; font-size:1.6rem; color: var(--gold); margin-top:1rem; display:block; }
