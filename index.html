@@ -16,6 +16,7 @@
 
   <!-- SCENE 1 — Cinematic Opening -->
   <section class="scene bg-dark" id="scene-intro">
+    <div class="glow-behind"></div>
     <p class="intro-line">Wait&hellip; today feels a little different.</p>
     <p class="intro-line">Oh&hellip; it's 20 August.</p>
     <p class="intro-line">Someone's birthday today 👀</p>
@@ -29,18 +30,30 @@
       <svg viewBox="0 0 400 320" width="100%" height="100%" style="overflow:visible">
         <defs>
           <radialGradient id="canopy" cx="45%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#ffd9e8"/>
-            <stop offset="55%" stop-color="#ffb3cf"/>
+            <stop offset="0%" stop-color="#fff0f5"/>
+            <stop offset="45%" stop-color="#ffd9e8"/>
+            <stop offset="75%" stop-color="#ffb3cf"/>
             <stop offset="100%" stop-color="#ff8fb3"/>
           </radialGradient>
+          <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,240,190,0.9)"/>
+            <stop offset="100%" stop-color="rgba(255,240,190,0)"/>
+          </radialGradient>
         </defs>
+        <circle cx="330" cy="45" r="90" fill="url(#sunGlow)"/>
         <rect x="185" y="180" width="26" height="140" rx="10" fill="#6b3a1e"/>
         <path d="M198 220 Q140 190 110 150" stroke="#6b3a1e" stroke-width="10" fill="none" stroke-linecap="round"/>
         <path d="M205 210 Q270 180 300 140" stroke="#6b3a1e" stroke-width="10" fill="none" stroke-linecap="round"/>
-        <circle cx="200" cy="120" r="115" fill="url(#canopy)"/>
-        <circle cx="110" cy="150" r="55" fill="url(#canopy)"/>
-        <circle cx="300" cy="140" r="60" fill="url(#canopy)"/>
-        <circle cx="200" cy="65" r="70" fill="url(#canopy)"/>
+        <path d="M198 250 Q150 260 120 245" stroke="#6b3a1e" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <circle cx="200" cy="120" r="115" fill="url(#canopy)" filter="drop-shadow(0 12px 30px rgba(255,140,180,0.35))"/>
+        <circle cx="105" cy="155" r="58" fill="url(#canopy)"/>
+        <circle cx="302" cy="145" r="62" fill="url(#canopy)"/>
+        <circle cx="200" cy="60" r="72" fill="url(#canopy)"/>
+        <circle cx="130" cy="230" r="34" fill="url(#canopy)" opacity="0.9"/>
+        <circle cx="270" cy="225" r="38" fill="url(#canopy)" opacity="0.9"/>
+        <circle cx="230" cy="34" r="8" fill="#fff" opacity="0.85"/>
+        <circle cx="150" cy="90" r="6" fill="#fff" opacity="0.7"/>
+        <circle cx="330" cy="120" r="7" fill="#fff" opacity="0.75"/>
       </svg>
     </div>
     <h2 class="headline">Enter her <span class="script">Golden Garden</span></h2>
@@ -147,6 +160,7 @@
 
   <!-- FINAL SCENE -->
   <section class="scene bg-final" id="scene-final">
+    <div class="glow-behind"></div>
     <div class="roses-edge">
       <span style="top:6%; left:4%;">🌹</span>
       <span style="top:12%; right:6%;">🌹</span>
