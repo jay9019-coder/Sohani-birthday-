@@ -99,14 +99,8 @@ function loop(){
 loop();
 
 /* ---------- Scene manager ---------- */
-const scenes = ['intro','blossom','game','joke','favorites','letter','final'];
+const scenes = ['intro','blossom','game','joke','favorites','special','cake','letter','final'];
 let currentIndex = 0;
-const dotsWrap = document.getElementById('sceneDots');
-scenes.forEach((s,i)=>{
-  const d = document.createElement('span');
-  if(i===0) d.classList.add('active');
-  dotsWrap.appendChild(d);
-});
 
 function goToScene(name){
   const idx = scenes.indexOf(name);
@@ -115,7 +109,6 @@ function goToScene(name){
   document.querySelectorAll('.scene').forEach(el=> el.classList.remove('active'));
   const target = document.getElementById('scene-'+name);
   target.classList.add('active');
-  [...dotsWrap.children].forEach((d,i)=> d.classList.toggle('active', i===idx));
   window.scrollTo(0,0);
   playSceneAnimation(name);
   if(name === 'final') intensity = 1.6;
@@ -205,8 +198,29 @@ function playSceneAnimation(name){
   if(name === 'blossom') playBlossom();
   if(name === 'joke') playJoke();
   if(name === 'favorites') playFavorites();
+  if(name === 'special') playSpecial();
+  if(name === 'cake') playCakeEntrance();
   if(name === 'letter') playLetter();
   if(name === 'final') playFinal();
+}
+
+function playSpecial(){
+  const lines = document.querySelectorAll('#scene-special .special-line');
+  const hearts = document.querySelectorAll('#scene-special .heart-row span');
+  gsap.set(lines, {opacity:0, y:16});
+  gsap.set(hearts, {opacity:0});
+  gsap.set('#scene-special .btn', {opacity:0, y:20});
+  const tl = gsap.timeline({delay:0.2});
+  lines.forEach((l,i)=>{
+    tl.to(l, {opacity:1, y:0, duration:0.8, ease:'power2.out'}, i*0.85);
+  });
+  tl.to(hearts, {opacity:1, duration:0.5, stagger:0.15}, '-=0.4');
+  tl.to('#scene-special .btn', {opacity:1, y:0, duration:0.7}, '+=0.3');
+}
+
+function playCakeEntrance(){
+  gsap.fromTo('#scene-cake .cake-wrap', {opacity:0, y:30, scale:0.92}, {opacity:1, y:0, scale:1, duration:1, ease:'power3.out'});
+  gsap.fromTo('#scene-cake .headline, #scene-cake .cake-hint', {opacity:0, y:16}, {opacity:1, y:0, duration:0.8, stagger:0.15});
 }
 
 function playIntro(){
@@ -265,14 +279,65 @@ function playFinal(){
 /* ---------- Navigation buttons ---------- */
 document.getElementById('btnEnterWorld').addEventListener('click', ()=>{ ensureAudio(); goToScene('game'); });
 document.getElementById('btnEnoughJoke').addEventListener('click', ()=> goToScene('favorites'));
+document.getElementById('btnToSpecial').addEventListener('click', ()=> goToScene('special'));
+document.getElementById('btnToCake').addEventListener('click', ()=> goToScene('cake'));
 document.getElementById('btnToLetter').addEventListener('click', ()=> goToScene('letter'));
 document.getElementById('btnToFinal').addEventListener('click', ()=> goToScene('final'));
 document.getElementById('btnReplay').addEventListener('click', ()=>{
   intensity = 1;
   resetGame();
+  resetCake();
   goToScene('intro');
 });
 document.getElementById('btnSkipGame').addEventListener('click', ()=> goToScene('joke'));
+
+/* ---------- Cake scene: blow out the candles ---------- */
+const candleEls = [...document.querySelectorAll('#candles .candle')];
+let candlesLit = candleEls.length;
+
+function sfxBlow(){
+  playTone(180, 0.2, 'sawtooth', 0.035);
+  playTone(90, 0.25, 'triangle', 0.03, 0.03);
+}
+
+function spawnSmoke(candle){
+  const smoke = document.createElement('div');
+  smoke.className = 'smoke';
+  const flame = candle.querySelector('.flame');
+  smoke.style.left = flame.offsetLeft + flame.offsetWidth/2 + 'px';
+  smoke.style.top = flame.offsetTop + 'px';
+  candle.style.position = 'relative';
+  candle.appendChild(smoke);
+  setTimeout(()=> smoke.remove(), 1100);
+}
+
+function blowCandle(candle){
+  if(candle.classList.contains('out')) return;
+  candle.classList.add('out');
+  spawnSmoke(candle);
+  sfxBlow();
+  candlesLit--;
+  if(candlesLit === 0){
+    setTimeout(()=>{
+      sfxCelebrate();
+      const msg = document.getElementById('cakeMsg');
+      msg.classList.remove('hidden');
+      gsap.fromTo(msg, {opacity:0, y:20}, {opacity:1, y:0, duration:0.8, ease:'power2.out'});
+    }, 350);
+  }
+}
+
+candleEls.forEach(c=>{
+  c.addEventListener('click', ()=> blowCandle(c));
+  c.addEventListener('touchstart', (e)=>{ e.preventDefault(); blowCandle(c); }, {passive:false});
+});
+
+function resetCake(){
+  candleEls.forEach(c=> c.classList.remove('out'));
+  candlesLit = candleEls.length;
+  document.getElementById('cakeMsg').classList.add('hidden');
+  gsap.set('#cakeMsg', {opacity:0, y:20});
+}
 
 /* ---------- Mini Game: Golden Summer Runner ---------- */
 const canvas = document.getElementById('gameCanvas');
