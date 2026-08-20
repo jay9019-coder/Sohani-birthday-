@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Happy Birthday, Sohani 🌸</title>
+<meta name="theme-color" content="#241505" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <canvas id="fx"></canvas>
+  <div class="vignette"></div>
+  <button id="musicToggle" aria-label="Toggle music">🔈</button>
+  <div id="sceneDots"></div>
+
+  <!-- SCENE 1 — Cinematic Opening -->
+  <section class="scene bg-dark" id="scene-intro">
+    <p class="intro-line">Wait&hellip; today feels a little different.</p>
+    <p class="intro-line">Oh&hellip; it's 20 August.</p>
+    <p class="intro-line">Someone's birthday today 👀</p>
+    <h1 class="headline intro-line intro-final">Happy Birthday,<br><span class="script">Sohani Didi</span> 🌸💛</h1>
+    <button class="btn" id="btnBegin">Begin ✨</button>
+  </section>
+
+  <!-- SCENE 2 — Cherry Blossom World -->
+  <section class="scene bg-garden" id="scene-blossom">
+    <div class="tree-wrap">
+      <svg viewBox="0 0 400 320" width="100%" height="100%" style="overflow:visible">
+        <defs>
+          <radialGradient id="canopy" cx="45%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffd9e8"/>
+            <stop offset="55%" stop-color="#ffb3cf"/>
+            <stop offset="100%" stop-color="#ff8fb3"/>
+          </radialGradient>
+        </defs>
+        <rect x="185" y="180" width="26" height="140" rx="10" fill="#6b3a1e"/>
+        <path d="M198 220 Q140 190 110 150" stroke="#6b3a1e" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M205 210 Q270 180 300 140" stroke="#6b3a1e" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <circle cx="200" cy="120" r="115" fill="url(#canopy)"/>
+        <circle cx="110" cy="150" r="55" fill="url(#canopy)"/>
+        <circle cx="300" cy="140" r="60" fill="url(#canopy)"/>
+        <circle cx="200" cy="65" r="70" fill="url(#canopy)"/>
+      </svg>
+    </div>
+    <h2 class="headline">Enter her <span class="script">Golden Garden</span></h2>
+    <p class="sub">A world of sunlight, blossoms and roses — built just for her.</p>
+    <div class="rose-row"><span>🌹</span><span>🌹</span><span>🌹</span></div>
+    <button class="btn" id="btnEnterWorld">Enter Her World →</button>
+  </section>
+
+  <!-- SCENE 3 — Interactive Mini Game -->
+  <section class="scene bg-game" id="scene-game">
+    <h2 class="headline" style="color:#3a1c05; margin-bottom:0.6rem;">Golden Summer Runner</h2>
+    <div id="gameHUD"><span>Score: <span id="scoreVal">0</span></span><span>Reach 15 to win 🌟</span></div>
+    <div style="position:relative; width:100%; max-width:640px;">
+      <canvas id="gameCanvas"></canvas>
+      <div id="gameOverlay">
+        <h3 id="overlayTitle" style="font-family:'Playfair Display'; font-size:1.4rem;">Golden Summer Runner</h3>
+        <p id="overlaySub" class="sub" style="color:#fff2d8;">Help her jump over roses &amp; branches. Tap JUMP or press Space.</p>
+        <div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
+          <button class="btn" id="btnStartGame">Start ▶</button>
+          <button class="btn hidden" id="btnRetryGame">Try Again 🔁</button>
+          <button class="btn ghost hidden" id="btnContinueGame">Continue →</button>
+          <button class="btn ghost" id="btnSkipGame">Skip Game →</button>
+        </div>
+      </div>
+    </div>
+    <button id="jumpBtn">JUMP ⬆️</button>
+  </section>
+
+  <!-- SCENE 4 — Didi Teasing Section -->
+  <section class="scene bg-joke" id="scene-joke">
+    <p class="joke-line headline" style="font-size:clamp(1.4rem,5vw,2.4rem);">Congratulations! 🎉</p>
+    <p class="joke-line">You survived the challenge&hellip;</p>
+    <p class="joke-line">Just like I survive having a <span class="script" style="font-size:1.4em;">DIDI</span> every day. 😂</p>
+    <p class="joke-line">Okay okay&hellip; you're not that old. 😭</p>
+    <button class="btn" id="btnEnoughJoke">Okay, Enough 😭 →</button>
+  </section>
+
+  <!-- SCENE 5 — Her Favorites -->
+  <section class="scene bg-favs" id="scene-favorites">
+    <h2 class="headline">Everything <span class="script">She Loves</span></h2>
+    <div class="fav-cards">
+      <div class="fav-card">
+        <div class="fav-icon">🌹</div>
+        <div class="fav-title">Rose</div>
+        <div class="fav-text">Because some things are beautiful without trying.</div>
+      </div>
+      <div class="fav-card">
+        <div class="fav-icon">💛</div>
+        <div class="fav-title">Yellow</div>
+        <div class="fav-text">Bright, warm and impossible to ignore.</div>
+      </div>
+      <div class="fav-card">
+        <div class="fav-icon">☀️</div>
+        <div class="fav-title">Summer</div>
+        <div class="fav-text">Because apparently sunshine wasn't enough&hellip; so you had to exist too.</div>
+      </div>
+    </div>
+    <button class="btn" id="btnToLetter">Read Her Letter →</button>
+  </section>
+
+  <!-- SCENE 6 — Birthday Letter -->
+  <section class="scene bg-letter" id="scene-letter">
+    <div class="letter-card">
+      <p class="letter-text" id="letterBody">Dear Sohani Didi, I know I call you Didi mostly to annoy you 😂, but today I'll be nice… just for one day. I hope this year brings you countless reasons to smile, beautiful memories, peaceful moments and everything you've been wishing for. Stay the same wonderful person you are. Keep smiling, keep shining, and don't forget — you're officially allowed to enjoy being the birthday girl today. 🌹💛 Happy Birthday, Sohani! 🎂✨</p>
+      <span class="signature">— From your annoying little brother 😭</span>
+    </div>
+    <button class="btn" id="btnToFinal">Continue →</button>
+  </section>
+
+  <!-- FINAL SCENE -->
+  <section class="scene bg-final" id="scene-final">
+    <div class="roses-edge">
+      <span style="top:6%; left:4%;">🌹</span>
+      <span style="top:12%; right:6%;">🌹</span>
+      <span style="bottom:10%; left:8%;">🌹</span>
+      <span style="bottom:16%; right:5%;">🌹</span>
+      <span style="top:45%; left:2%;">🌸</span>
+      <span style="top:50%; right:3%;">🌸</span>
+    </div>
+    <h1 class="headline">Happy Birthday, <span class="script">Sohani</span> 🌹</h1>
+    <p class="script" style="font-size:clamp(1.4rem,4vw,2.2rem);">Stay golden. Stay happy. Keep smiling. 💛</p>
+    <p class="sub sub2">And yes&hellip; you'll still be Didi tomorrow. 😂</p>
+    <button class="btn" id="btnReplay">Replay the Magic ✨</button>
+  </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
