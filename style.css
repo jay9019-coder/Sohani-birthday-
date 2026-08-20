@@ -223,6 +223,69 @@ canvas#fx{ position:fixed; inset:0; width:100%; height:100%; z-index:5; pointer-
 #cakeMsg{ margin-top: 1.8rem; }
 .cake-hint{ color:#5a2c0d; }
 
+/* Flip-card reasons grid */
+.reasons-grid{
+  display:grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem;
+  max-width: 460px; width:100%; margin: 1.6rem auto 0;
+}
+.flip-card{ perspective: 1000px; cursor:pointer; height: 78px; -webkit-user-select:none; user-select:none; }
+.flip-card-inner{
+  position:relative; width:100%; height:100%; transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner{ transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back{
+  position:absolute; inset:0; backface-visibility:hidden;
+  border-radius:16px; display:flex; align-items:center; justify-content:center;
+  padding:8px; text-align:center;
+  background: rgba(255,246,224,0.08); backdrop-filter: blur(10px);
+  border:1px solid rgba(255,246,224,0.25);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+}
+.flip-card-front{ font-size:1.7rem; }
+.flip-card-back{
+  transform: rotateY(180deg); font-family:'Cormorant Garamond', serif; font-style:italic;
+  font-size: 0.78rem; line-height:1.25; color: var(--cream);
+  background: rgba(244,200,105,0.16);
+}
+@media (max-width:480px){
+  .reasons-grid{ grid-template-columns: repeat(3, 1fr); max-width: 340px; }
+}
+
+/* Confetti */
+.confetti-piece{
+  position:fixed; width:9px; height:9px; z-index:80; pointer-events:none;
+  animation: confettiFall 3s linear forwards;
+}
+@keyframes confettiFall{
+  0%{ transform: translateY(-10vh) rotate(0deg); opacity:1; }
+  100%{ transform: translateY(100vh) rotate(720deg); opacity:0; }
+}
+
+/* Final surprise popup */
+#finalPopup{
+  position:fixed; inset:0; z-index:90; display:flex; align-items:center; justify-content:center;
+  background: rgba(20,8,2,0.6); backdrop-filter: blur(4px);
+  opacity:0; pointer-events:none; transition: opacity 0.5s ease; padding: 20px;
+}
+#finalPopup.show{ opacity:1; pointer-events:all; }
+.popup-card{
+  max-width: 340px; width:100%; text-align:center; padding: 2.2rem 1.6rem;
+  background: rgba(255,246,224,0.1); backdrop-filter: blur(16px);
+  border:1px solid rgba(255,246,224,0.3); border-radius:22px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+  transform: scale(0.9); transition: transform 0.5s ease;
+}
+#finalPopup.show .popup-card{ transform: scale(1); }
+.popup-icon{ font-size:2.4rem; margin-bottom:0.5rem; }
+
+/* Tap petal stamp */
+.tap-stamp{
+  position:fixed; pointer-events:none; z-index:9999; font-size:26px;
+  transform: scale(0.5); opacity:0; transition: transform 0.18s ease-out, opacity 0.18s ease-out;
+}
+.tap-stamp.show{ transform: scale(1.15); opacity:1; }
+
 /* Favorites */
 .fav-cards{ display:flex; flex-wrap:wrap; gap:1.4rem; justify-content:center; margin-top:2rem; max-width: 900px; }
 .fav-card{
