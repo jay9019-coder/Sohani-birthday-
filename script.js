@@ -205,17 +205,10 @@ function playSceneAnimation(name){
 }
 
 function playSpecial(){
-  const lines = document.querySelectorAll('#scene-special .special-line');
-  const hearts = document.querySelectorAll('#scene-special .heart-row span');
-  gsap.set(lines, {opacity:0, y:16});
-  gsap.set(hearts, {opacity:0});
-  gsap.set('#scene-special .btn', {opacity:0, y:20});
-  const tl = gsap.timeline({delay:0.2});
-  lines.forEach((l,i)=>{
-    tl.to(l, {opacity:1, y:0, duration:0.8, ease:'power2.out'}, i*0.85);
-  });
-  tl.to(hearts, {opacity:1, duration:0.5, stagger:0.15}, '-=0.4');
-  tl.to('#scene-special .btn', {opacity:1, y:0, duration:0.7}, '+=0.3');
+  gsap.fromTo('#scene-special .flip-card', {opacity:0, y:20, scale:0.9}, {opacity:1, y:0, scale:1, duration:0.6, stagger:0.08, ease:'back.out(1.6)', delay:0.2});
+  gsap.fromTo('#scene-special .heart-row span', {opacity:0}, {opacity:1, duration:0.5, stagger:0.15, delay:1});
+  gsap.fromTo('#scene-special .emphasis', {opacity:0, y:16}, {opacity:1, y:0, duration:0.8, delay:1.3});
+  gsap.fromTo('#scene-special .btn', {opacity:0, y:20}, {opacity:1, y:0, duration:0.7, delay:1.7});
 }
 
 function playCakeEntrance(){
@@ -274,7 +267,78 @@ function playFinal(){
   gsap.fromTo('#scene-final .btn', {opacity:0, y:20}, {opacity:1, y:0, duration:1, delay:1.6});
   gsap.fromTo('#scene-final .roses-edge span', {opacity:0, scale:0.5}, {opacity:0.85, scale:1, duration:1, stagger:0.15, delay:0.3});
   sfxCelebrate();
+  spawnConfetti(50);
+  setTimeout(()=>{
+    document.getElementById('finalPopup').classList.add('show');
+  }, 1800);
 }
+
+document.getElementById('btnClosePopup').addEventListener('click', ()=>{
+  document.getElementById('finalPopup').classList.remove('show');
+});
+
+/* ---------- Confetti ---------- */
+function spawnConfetti(count){
+  count = count || 36;
+  const colors = ['#f4c869','#ff9a5a','#e8577a','#fff6e6','#d99b3f'];
+  for(let i=0;i<count;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.top = '-10px';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDelay = (Math.random()*0.6) + 's';
+    c.style.animationDuration = (2.4 + Math.random()*1.4) + 's';
+    document.body.appendChild(c);
+    setTimeout(()=> c.remove(), 4200);
+  }
+}
+
+/* ---------- Why She's Special: flip cards ---------- */
+const reasons = [
+  {icon:'💛', text:"She always checks in, even when she's tired."},
+  {icon:'🌹', text:'She listens more than she talks.'},
+  {icon:'✨', text:'She remembers little things nobody else does.'},
+  {icon:'🤍', text:'Her care comes with no conditions.'},
+  {icon:'☀️', text:'She makes ordinary days feel warmer.'},
+  {icon:'🌸', text:'She shows up, every single time.'},
+  {icon:'😊', text:'Her smile fixes bad days.'},
+  {icon:'💫', text:"She's family, by choice."}
+];
+const reasonsGrid = document.getElementById('reasonsGrid');
+reasons.forEach(r=>{
+  const card = document.createElement('div');
+  card.className = 'flip-card';
+  card.innerHTML = `<div class="flip-card-inner">
+    <div class="flip-card-front">${r.icon}</div>
+    <div class="flip-card-back">${r.text}</div>
+  </div>`;
+  card.addEventListener('click', ()=>{ card.classList.toggle('flipped'); sfxClick(); });
+  reasonsGrid.appendChild(card);
+});
+
+/* ---------- Tap-anywhere petal stamp ---------- */
+const STAMP_EMOJI = ['🌸','🌹','💛'];
+function stampAt(x, y){
+  const el = document.createElement('div');
+  el.className = 'tap-stamp';
+  el.textContent = STAMP_EMOJI[Math.floor(Math.random()*STAMP_EMOJI.length)];
+  el.style.left = (x - 13) + 'px';
+  el.style.top = (y - 13) + 'px';
+  document.body.appendChild(el);
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{
+    el.style.opacity = '0';
+    el.style.transform = 'scale(1.5)';
+    setTimeout(()=> el.remove(), 180);
+  }, 140);
+}
+const STAMP_EXCLUDE = 'button, .flip-card, .candle, #candles, #jumpBtn, #gameCanvas, #finalPopup, #musicToggle';
+document.addEventListener('pointerdown', (e)=>{
+  if(e.target.closest(STAMP_EXCLUDE)) return;
+  stampAt(e.clientX, e.clientY);
+});
 
 /* ---------- Navigation buttons ---------- */
 document.getElementById('btnEnterWorld').addEventListener('click', ()=>{ ensureAudio(); goToScene('game'); });
@@ -287,6 +351,8 @@ document.getElementById('btnReplay').addEventListener('click', ()=>{
   intensity = 1;
   resetGame();
   resetCake();
+  document.getElementById('finalPopup').classList.remove('show');
+  document.querySelectorAll('#reasonsGrid .flip-card.flipped').forEach(c=> c.classList.remove('flipped'));
   goToScene('intro');
 });
 document.getElementById('btnSkipGame').addEventListener('click', ()=> goToScene('joke'));
@@ -320,6 +386,7 @@ function blowCandle(candle){
   if(candlesLit === 0){
     setTimeout(()=>{
       sfxCelebrate();
+      spawnConfetti(30);
       const msg = document.getElementById('cakeMsg');
       msg.classList.remove('hidden');
       gsap.fromTo(msg, {opacity:0, y:20}, {opacity:1, y:0, duration:0.8, ease:'power2.out'});
@@ -467,7 +534,8 @@ function updateGame(){
 function drawGame(){
   gctx.clearRect(0,0,gw,gh);
   const groundY = gh*GROUND_RATIO;
-  // sky gradient
+
+// sky gradient
   const sky = gctx.createLinearGradient(0,0,0,gh);
   sky.addColorStop(0,'#fff0c9'); sky.addColorStop(0.6,'#ffc06e'); sky.addColorStop(1,'#ff9a5a');
   gctx.fillStyle = sky; gctx.fillRect(0,0,gw,gh);
