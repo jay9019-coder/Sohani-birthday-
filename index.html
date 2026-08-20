@@ -13,7 +13,6 @@
   <canvas id="fx"></canvas>
   <div class="vignette"></div>
   <button id="musicToggle" aria-label="Toggle music">🔈</button>
-  <div id="sceneDots"></div>
 
   <!-- SCENE 1 — Cinematic Opening -->
   <section class="scene bg-dark" id="scene-intro">
@@ -99,10 +98,47 @@
         <div class="fav-text">Because apparently sunshine wasn't enough&hellip; so you had to exist too.</div>
       </div>
     </div>
-    <button class="btn" id="btnToLetter">Read Her Letter →</button>
+    <button class="btn" id="btnToSpecial">Why She's Special →</button>
   </section>
 
-  <!-- SCENE 6 — Birthday Letter -->
+  <!-- SCENE 5.5 — Why She's Special -->
+  <section class="scene bg-special" id="scene-special">
+    <p class="special-line">Some people are special because of what they achieve.</p>
+    <p class="special-line">She's special because of how she makes people <em>feel</em>.</p>
+    <p class="special-line">She listens when no one else does.</p>
+    <p class="special-line">She checks in — even on her busiest, most tiring days.</p>
+    <p class="special-line">She remembers the little things, and shows up for the big ones.</p>
+    <div class="heart-row"><span>💛</span><span>🌹</span><span>💛</span></div>
+    <p class="special-line emphasis">That's why today isn't just a birthday.<br>It's a thank you.</p>
+    <button class="btn" id="btnToCake">See Her Cake 🎂 →</button>
+  </section>
+
+  <!-- SCENE 6 — Make a Wish (Cake) -->
+  <section class="scene bg-cake" id="scene-cake">
+    <h2 class="headline" style="color:#3a1c05;">Make a Wish, <span class="script">Sohani</span> 🎂</h2>
+    <p class="sub cake-hint">Tap each candle to blow it out.</p>
+    <div class="cake-wrap">
+      <div class="candles" id="candles">
+        <div class="candle" data-idx="0"><div class="flame"></div><div class="stick"></div></div>
+        <div class="candle" data-idx="1"><div class="flame"></div><div class="stick"></div></div>
+        <div class="candle" data-idx="2"><div class="flame"></div><div class="stick"></div></div>
+        <div class="candle" data-idx="3"><div class="flame"></div><div class="stick"></div></div>
+        <div class="candle" data-idx="4"><div class="flame"></div><div class="stick"></div></div>
+      </div>
+      <div class="cake-body">
+        <div class="cake-top"></div>
+        <div class="cake-layer layer1"></div>
+        <div class="cake-layer layer2"></div>
+        <div class="plate"></div>
+      </div>
+    </div>
+    <div id="cakeMsg" class="hidden">
+      <p class="script" style="font-size:1.6rem; color:#3a1c05;">Your wish is on its way ✨</p>
+      <button class="btn" id="btnToLetter">Continue →</button>
+    </div>
+  </section>
+
+  <!-- SCENE 7 — Birthday Letter -->
   <section class="scene bg-letter" id="scene-letter">
     <div class="letter-card">
       <p class="letter-text" id="letterBody">Dear Sohani Didi, I know I call you Didi mostly to annoy you 😂, but today I'll be nice… just for one day. I hope this year brings you countless reasons to smile, beautiful memories, peaceful moments and everything you've been wishing for. Stay the same wonderful person you are. Keep smiling, keep shining, and don't forget — you're officially allowed to enjoy being the birthday girl today. 🌹💛 Happy Birthday, Sohani! 🎂✨</p>
